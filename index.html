@@ -37,13 +37,13 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', Tahoma, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-dark); transition: var(--transition); line-height: 1.6; }
+        body { background-color: var(--bg-color); color: var(--text-dark); transition: var(--transition); line-height: 1.6; overflow-x: hidden;}
 
         /* النافبار */
         .main-navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--card-bg); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-color);}
         .logo h2 { color: var(--main-theme); font-weight: 900; margin: 0; font-size: 24px; cursor: pointer;}
         .nav-links-desktop { display: flex; list-style: none; gap: 25px; align-items: center;}
-        .nav-links-desktop a { text-decoration: none; color: var(--text-dark); font-weight: 700; transition: var(--transition); font-size: 16px;}
+        .nav-links-desktop a { text-decoration: none; color: var(--text-dark); font-weight: 700; transition: var(--transition); font-size: 16px; cursor: pointer;}
         .nav-links-desktop a:hover { color: var(--main-theme); }
         .nav-actions { display: flex; align-items: center; gap: 15px; }
         .theme-toggle { background: transparent; border: none; font-size: 22px; color: var(--text-dark); cursor: pointer; transition: var(--transition); }
@@ -117,7 +117,7 @@
         .footer-col h3 { font-size: 20px; margin-bottom: 15px; color: white;}
         .footer-col p { color: #94a3b8; font-size: 15px;}
         .social-links { display: flex; gap: 15px; }
-        .social-btn { width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; text-decoration: none; transition: var(--transition); background: rgba(255,255,255,0.1); font-size: 18px;}
+        .social-btn { width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; text-decoration: none; transition: var(--transition); background: rgba(255,255,255,0.1); font-size: 18px; cursor: pointer;}
         .social-btn:hover { transform: translateY(-5px); }
         .social-btn.facebook:hover { background: #1877f2; }
         .social-btn.whatsapp:hover { background: #25D366; }
@@ -128,7 +128,8 @@
         .sidebar .nav-links { list-style: none; }
         .sidebar .nav-links li { padding: 16px 25px; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; gap: 15px; font-weight: bold; transition: var(--transition); font-size: 15px;}
         .sidebar .nav-links li:hover, .sidebar .nav-links li.active { background: var(--main-theme-light); color: var(--main-theme); border-right: 5px solid var(--main-theme); }
-        .main-content { flex: 1; padding: 40px; overflow-x: hidden;}
+        .main-content { flex: 1; padding: 40px; overflow-x: hidden; position: relative;}
+        
         .view { display: none; animation: fadeIn 0.4s ease-out; }
         .active-view { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -218,7 +219,7 @@
             .hero-section { flex-direction: column; text-align: center; padding: 40px 5%;}
             .nav-links-desktop { display: none; }
             .dashboard-layout { flex-direction: column; }
-            .sidebar { width: 100%; border-left: none; border-bottom: 1px solid var(--border-color); padding: 10px; display: flex; overflow-x: auto;}
+            .sidebar { width: 100%; border-left: none; border-bottom: 1px solid var(--border-color); padding: 10px; display: flex; overflow-x: auto; white-space: nowrap;}
             .main-content { padding: 20px; }
             .course-details-header { flex-direction: column; text-align: center; gap: 15px; }
         }
@@ -231,19 +232,19 @@
     <!-- ========================================================= -->
     
     <nav class="main-navbar">
-        <div class="logo" onclick="document.getElementById('nav-home-link').click()">
+        <div class="logo" id="nav-logo-btn">
             <h2 id="platform-name-display">المنصة التعليمية</h2>
         </div>
         <ul class="nav-links-desktop" id="visitor-nav">
-            <li><a href="#" id="nav-home-link">الرئيسية</a></li>
-            <li><a href="#courses-section">الكورسات</a></li>
-            <li><a href="#" onclick="navigateTo('my-courses-view')">كورساتي <i class="fas fa-book-reader"></i></a></li>
+            <li><a id="nav-home-top-btn">الرئيسية</a></li>
+            <li><a id="nav-courses-top-btn">الكورسات</a></li>
+            <li><a id="nav-mycourses-top-btn">كورساتي <i class="fas fa-book-reader"></i></a></li>
         </ul>
         <div class="nav-actions">
             <button class="theme-toggle" id="theme-toggle-btn"><i class="fas fa-moon"></i></button>
             <div id="auth-buttons">
-                <button class="primary-btn outline" id="login-btn">دخول</button>
-                <button class="primary-btn" id="register-btn">حساب جديد</button>
+                <button class="primary-btn outline" id="btn-login-modal">دخول</button>
+                <button class="primary-btn" id="btn-register-modal">حساب جديد</button>
             </div>
             <div id="user-profile-menu" style="display: none; align-items: center; gap: 15px;">
                 <button class="primary-btn" id="go-to-dashboard-btn" style="border-radius: 20px;"><i class="fas fa-user-graduate"></i> لوحتي</button>
@@ -269,7 +270,7 @@
                     <div class="h-stat"><i class="fas fa-users"></i> منصة متكاملة</div>
                     <div class="h-stat"><i class="fas fa-video"></i> دروس تفاعلية</div>
                 </div>
-                <button class="primary-btn hero-cta" onclick="document.getElementById('courses-section').scrollIntoView({behavior: 'smooth'})">تصفح الكورسات <i class="fas fa-arrow-down"></i></button>
+                <button class="primary-btn hero-cta" id="hero-browse-courses-btn">تصفح الكورسات <i class="fas fa-arrow-down"></i></button>
             </div>
             <div class="hero-image-wrapper">
                 <div class="glow-circle"></div>
@@ -296,8 +297,8 @@
                 <div class="footer-col">
                     <h3>تواصل معنا</h3>
                     <div class="social-links">
-                        <a href="#" class="social-btn facebook" id="link-fb"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-btn whatsapp" id="link-wa"><i class="fab fa-whatsapp"></i></a>
+                        <a style="cursor: pointer;" class="social-btn facebook" id="link-fb"><i class="fab fa-facebook-f"></i></a>
+                        <a style="cursor: pointer;" class="social-btn whatsapp" id="link-wa"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
@@ -308,10 +309,10 @@
     <div id="student-dashboard" style="display: none;">
         <div class="dashboard-layout">
             <aside class="sidebar">
-                <ul class="nav-links">
-                    <li class="active" data-target="dashboard-view"><i class="fas fa-home"></i> ملخص الإنجاز</li>
-                    <li data-target="my-courses-view"><i class="fas fa-book-reader"></i> كورساتي</li>
-                    <li data-target="leaderboard-view"><i class="fas fa-trophy"></i> المتصدرين</li>
+                <ul class="nav-links" id="sidebar-nav-links">
+                    <li class="active" id="nav-dashboard-view"><i class="fas fa-home"></i> ملخص الإنجاز</li>
+                    <li id="nav-my-courses-view"><i class="fas fa-book-reader"></i> كورساتي</li>
+                    <li id="nav-leaderboard-view"><i class="fas fa-trophy"></i> المتصدرين</li>
                 </ul>
             </aside>
             
@@ -337,16 +338,15 @@
                     <div class="courses-grid" id="student-enrolled-courses"></div>
                 </section>
 
-                <!-- شاشة عرض الدروس للكورس المحدد (تصميم البطاقات المطابق) -->
+                <!-- شاشة عرض الدروس للكورس المحدد -->
                 <section id="course-details-view" class="view">
                     <div class="course-details-header">
                         <div class="course-header-info">
                             <h2 id="course-title-header">اسم الكورس</h2>
                             <p id="course-desc-header">وصف الكورس</p>
                         </div>
-                        <button class="back-btn outline-btn" id="back-to-home-from-course"><i class="fas fa-arrow-right"></i> العودة للخلف</button>
+                        <button class="back-btn outline-btn" id="back-to-home-from-course-btn"><i class="fas fa-arrow-right"></i> العودة للكورسات</button>
                     </div>
-                    <!-- شبكة بطاقات الدروس -->
                     <div class="lessons-cards-grid" id="lessons-cards-container"></div>
                 </section>
 
@@ -392,7 +392,7 @@
                         <h2>اكتمل الاختبار!</h2>
                         <div style="font-size: 45px; font-weight: 900; color: var(--main-theme); margin: 20px 0;"><span id="final-score">0</span> / <span id="total-score">0</span></div>
                         <div style="background: #fef3c7; color: #d97706; padding: 15px; border-radius: 15px; font-weight: 900; font-size: 18px; display: inline-block;">أضفنا <strong id="earned-points-display">0</strong> نقطة لرصيدك!</div>
-                        <div style="margin-top: 30px;"><button class="primary-btn outline" id="back-to-lesson-from-quiz">العودة للدرس</button></div>
+                        <div style="margin-top: 30px;"><button class="primary-btn outline" id="back-to-lesson-from-quiz-btn">العودة للدرس</button></div>
                     </div>
                 </section>
 
@@ -411,8 +411,6 @@
     </div>
 
     <!-- ================= النوافذ المنبثقة ================= -->
-    
-    <!-- نافذة تسجيل الدخول والحساب -->
     <div class="modal-overlay" id="auth-modal">
         <div class="modal-content text-center">
             <button class="close-modal-btn"><i class="fas fa-times"></i></button>
@@ -444,7 +442,6 @@
         </div>
     </div>
 
-    <!-- نافذة إدخال الكود (تفتح للزوار وللطلاب) -->
     <div class="modal-overlay" id="unlock-modal">
         <div class="modal-content text-center">
             <button class="close-modal-btn"><i class="fas fa-times"></i></button>
@@ -459,7 +456,7 @@
             <div class="whatsapp-contact-box">
                 <h4 style="color:#166534;">ليس لديك كود؟</h4>
                 <p style="color:#15803d; font-size:14px; margin-bottom:15px;">تواصل مع المعلم للحصول على الكود فوراً.</p>
-                <a href="#" id="whatsapp-request-btn" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp" style="font-size: 20px;"></i> تواصل لطلب الكود</a>
+                <a style="cursor: pointer;" id="whatsapp-request-btn" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp" style="font-size: 20px;"></i> تواصل لطلب الكود</a>
             </div>
         </div>
     </div>
@@ -472,7 +469,6 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, query, where, getDocs, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // إعدادات فايرباس
         const firebaseConfig = {
             apiKey: "AIzaSyC5rq_NLwMVe3npZ9sKft5mRBP84Pu9enI",
             authDomain: "manasa2-2688d.firebaseapp.com",
@@ -485,49 +481,53 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // ================= توليد بصمة الجهاز (Device ID) =================
+        // ================= توليد بصمة الجهاز =================
         let deviceId = localStorage.getItem('loughati_device_id');
         if (!deviceId) {
             deviceId = 'DEV_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
             localStorage.setItem('loughati_device_id', deviceId);
         }
 
-        // ================= دالة تحويل روابط يوتيوب (محسنة) =================
+        // ================= دالة تحويل روابط يوتيوب =================
         function getEmbedUrl(url) {
             if (!url) return '';
             try {
-                // معالجة روابط يوتيوب العادية
-                if (url.includes('youtube.com/watch?v=')) {
-                    const videoId = new URL(url).searchParams.get('v');
-                    return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+                let videoId = '';
+                if (url.includes('youtube.com/watch')) {
+                    videoId = new URL(url).searchParams.get('v');
+                } else if (url.includes('youtu.be/')) {
+                    videoId = url.split('youtu.be/')[1].split('?')[0];
+                } else if (url.includes('youtube.com/shorts/')) {
+                    videoId = url.split('shorts/')[1].split('?')[0];
+                } else if (url.includes('youtube.com/embed/')) {
+                    return url; 
                 }
-                // معالجة روابط يوتيوب من الهاتف
-                if (url.includes('youtu.be/')) {
-                    const videoId = url.split('youtu.be/')[1].split('?')[0];
-                    return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
-                }
-                // إذا كان الرابط Embed جاهز
-                if (url.includes('youtube.com/embed/')) {
-                    return url;
-                }
+                if (videoId) return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
                 return url; 
-            } catch(e) {
-                return url;
-            }
+            } catch(e) { return url; }
         }
+
+        // ================= دالة تعقيم أرقام الهواتف =================
+        const sanitizePhone = (phoneStr) => {
+            let p = phoneStr.trim().replace(/\s+/g, '');
+            return p.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+        };
 
         // ================= الوضع الليلي =================
         const themeBtn = document.getElementById('theme-toggle-btn');
         const rootEl = document.documentElement;
-        if(localStorage.getItem('theme') === 'dark') { rootEl.setAttribute('data-theme', 'dark'); themeBtn.innerHTML = '<i class="fas fa-sun" style="color:#fbbf24;"></i>'; }
+        if(localStorage.getItem('theme') === 'dark') { 
+            rootEl.setAttribute('data-theme', 'dark'); 
+            if(themeBtn) themeBtn.innerHTML = '<i class="fas fa-sun" style="color:#fbbf24;"></i>'; 
+        }
         themeBtn?.addEventListener('click', () => {
             const newTheme = rootEl.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
             rootEl.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-            themeBtn.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun" style="color:#fbbf24;"></i>' : '<i class="fas fa-moon"></i>';
+            if(themeBtn) themeBtn.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun" style="color:#fbbf24;"></i>' : '<i class="fas fa-moon"></i>';
         });
 
-        // ================= جلب الإعدادات (الديناميكية) =================
+        // ================= جلب الإعدادات =================
         onSnapshot(doc(db, "settings", "general"), (docSnap) => {
             if(docSnap.exists()){
                 const d = docSnap.data();
@@ -536,75 +536,82 @@
                 if(document.getElementById('platform-title-hero')) document.getElementById('platform-title-hero').textContent = pName;
                 if(document.getElementById('footer-platform-name')) document.getElementById('footer-platform-name').textContent = pName;
                 if(document.getElementById('modal-platform-name')) document.getElementById('modal-platform-name').textContent = pName;
-                
                 if(document.getElementById('platform-desc-display')) document.getElementById('platform-desc-display').textContent = d.platformDesc || "تجربة تعليمية متكاملة.";
                 if(document.getElementById('teacher-name-display')) document.getElementById('teacher-name-display').textContent = d.teacherName ? "مع " + d.teacherName : "مع الأستاذ أحمد عيد";
                 if(document.getElementById('teacher-image-display') && d.teacherImage) document.getElementById('teacher-image-display').src = d.teacherImage;
-
                 if(document.getElementById('link-wa') && d.links?.whatsapp) document.getElementById('link-wa').href = `https://wa.me/${d.links.whatsapp}`;
                 if(document.getElementById('whatsapp-request-btn') && d.links?.whatsapp) document.getElementById('whatsapp-request-btn').href = `https://wa.me/${d.links.whatsapp}?text=السلام%20عليكم،%20أريد%20الحصول%20على%20كود%20تفعيل%20لكورس%20على%20المنصة`;
                 if(document.getElementById('link-fb') && d.links?.facebook) document.getElementById('link-fb').href = d.links.facebook;
             }
         });
 
-        // ================= نظام التنقل (SPA) =================
-        const views = document.querySelectorAll('.main-content .view');
-        const navItems = document.querySelectorAll('.sidebar .nav-links li');
-        const landingPage = document.getElementById('landing-page');
-        const studentDashboard = document.getElementById('student-dashboard');
+        // ================= نظام التنقل الثابت والمباشر =================
+        const navigateTo = (targetId) => {
+            const vFrame = document.getElementById('lesson-video-frame');
+            if(vFrame) vFrame.src = '';
 
-        window.navigateTo = function(targetId) {
-            // إيقاف أي فيديو يعمل عند الخروج من شاشة الدرس
-            if(targetId !== 'lesson-view'){
-                const vFrame = document.getElementById('lesson-video-frame');
-                if(vFrame) vFrame.src = '';
-            }
+            const views = document.querySelectorAll('.main-content .view');
+            const navItems = document.querySelectorAll('.sidebar .nav-links li');
+            const landingPage = document.getElementById('landing-page');
+            const studentDashboard = document.getElementById('student-dashboard');
 
-            if (targetId === 'landing-page') {
-                landingPage.style.display = 'block'; studentDashboard.style.display = 'none';
-                window.scrollTo(0, 0); return;
-            }
-            if (targetId === 'my-courses-view') {
-                if (auth.currentUser) {
-                    getDoc(doc(db, "users", auth.currentUser.uid)).then(d => {
-                        if(d.exists()) window.renderMyCourses(d.data().enrolledCourses || []);
-                    });
-                } else {
-                    window.renderMyCourses(JSON.parse(localStorage.getItem('guestEnrolledCourses') || '[]'));
-                }
-            }
-            landingPage.style.display = 'none'; studentDashboard.style.display = 'block';
             views.forEach(v => v.classList.remove('active-view'));
             navItems.forEach(n => n.classList.remove('active'));
-            document.getElementById(targetId)?.classList.add('active-view');
-            navItems.forEach(n => { if(n.getAttribute('data-target') === targetId) n.classList.add('active'); });
-            window.scrollTo(0, 0);
-        }
+
+            if (targetId === 'landing-page') {
+                if(landingPage) landingPage.style.display = 'block'; 
+                if(studentDashboard) studentDashboard.style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                return;
+            }
+
+            if(landingPage) landingPage.style.display = 'none'; 
+            if(studentDashboard) studentDashboard.style.display = 'block';
+            
+            const targetView = document.getElementById(targetId);
+            if(targetView) targetView.classList.add('active-view');
+            
+            const navLink = document.getElementById('nav-' + targetId);
+            if(navLink) navLink.classList.add('active');
+
+            if (targetId === 'my-courses-view') forceRenderMyCourses();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // ربط أزرار التنقل
+        document.getElementById('nav-logo-btn')?.addEventListener('click', () => navigateTo('landing-page'));
+        document.getElementById('nav-home-top-btn')?.addEventListener('click', () => navigateTo('landing-page'));
+        document.getElementById('nav-courses-top-btn')?.addEventListener('click', () => { navigateTo('landing-page'); setTimeout(()=>document.getElementById('courses-section')?.scrollIntoView({behavior:'smooth'}), 100); });
+        document.getElementById('nav-mycourses-top-btn')?.addEventListener('click', () => navigateTo('my-courses-view'));
+        
+        document.getElementById('nav-dashboard-view')?.addEventListener('click', () => navigateTo('dashboard-view'));
+        document.getElementById('nav-my-courses-view')?.addEventListener('click', () => navigateTo('my-courses-view'));
+        document.getElementById('nav-leaderboard-view')?.addEventListener('click', () => navigateTo('leaderboard-view'));
 
         document.getElementById('go-to-dashboard-btn')?.addEventListener('click', () => navigateTo('dashboard-view'));
+        document.getElementById('hero-browse-courses-btn')?.addEventListener('click', () => document.getElementById('courses-section')?.scrollIntoView({behavior: 'smooth'}));
         
-        document.getElementById('back-to-home-from-course')?.addEventListener('click', () => {
-            navigateTo('landing-page'); document.getElementById('courses-section').scrollIntoView(); 
-        });
+        document.getElementById('back-to-home-from-course-btn')?.addEventListener('click', () => { navigateTo('landing-page'); document.getElementById('courses-section')?.scrollIntoView({behavior: 'smooth'}); });
         document.getElementById('back-to-course-lessons-btn')?.addEventListener('click', () => navigateTo('course-details-view'));
-        document.getElementById('back-to-lesson-from-quiz')?.addEventListener('click', () => navigateTo('lesson-view'));
+        document.getElementById('back-to-lesson-from-quiz-btn')?.addEventListener('click', () => navigateTo('lesson-view'));
 
-        // النوافذ (Modals)
+        // ================= النوافذ (Modals) =================
         const authModal = document.getElementById('auth-modal');
         const unlockModal = document.getElementById('unlock-modal');
-        window.closeModal = function(modal) { if(modal) modal.classList.remove('active'); }
-        document.querySelectorAll('.close-modal-btn').forEach(btn => btn.addEventListener('click', (e) => closeModal(e.target.closest('.modal-overlay'))));
+        const closeModal = (modalEl) => { if(modalEl) modalEl.classList.remove('active'); };
         
-        document.getElementById('login-btn')?.addEventListener('click', () => { authModal.classList.add('active'); document.getElementById('tab-login').click(); });
-        document.getElementById('register-btn')?.addEventListener('click', () => { authModal.classList.add('active'); document.getElementById('tab-register').click(); });
+        document.querySelectorAll('.close-modal-btn').forEach(btn => btn.addEventListener('click', (e) => closeModal(e.target.closest('.modal-overlay'))));
+        document.getElementById('btn-login-modal')?.addEventListener('click', () => { if(authModal) authModal.classList.add('active'); document.getElementById('tab-login')?.click(); });
+        document.getElementById('btn-register-modal')?.addEventListener('click', () => { if(authModal) authModal.classList.add('active'); document.getElementById('tab-register')?.click(); });
         
         document.getElementById('tab-login')?.addEventListener('click', () => {
-            document.getElementById('tab-login').classList.add('active'); document.getElementById('tab-register').classList.remove('active');
-            document.getElementById('login-form').classList.add('active-form'); document.getElementById('register-form').classList.remove('active-form');
+            document.getElementById('tab-login')?.classList.add('active'); document.getElementById('tab-register')?.classList.remove('active');
+            document.getElementById('login-form')?.classList.add('active-form'); document.getElementById('register-form')?.classList.remove('active-form');
         });
         document.getElementById('tab-register')?.addEventListener('click', () => {
-            document.getElementById('tab-register').classList.add('active'); document.getElementById('tab-login').classList.remove('active');
-            document.getElementById('register-form').classList.add('active-form'); document.getElementById('login-form').classList.remove('active-form');
+            document.getElementById('tab-register')?.classList.add('active'); document.getElementById('tab-login')?.classList.remove('active');
+            document.getElementById('register-form')?.classList.add('active-form'); document.getElementById('login-form')?.classList.remove('active-form');
         });
 
         // ================= نظام المصادقة وربط الأجهزة =================
@@ -612,92 +619,88 @@
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                document.getElementById('auth-buttons').style.display = 'none';
-                document.getElementById('user-profile-menu').style.display = 'flex';
-                closeModal(authModal);
+                if(document.getElementById('auth-buttons')) document.getElementById('auth-buttons').style.display = 'none';
+                if(document.getElementById('user-profile-menu')) document.getElementById('user-profile-menu').style.display = 'flex';
                 
                 onSnapshot(doc(db, "users", user.uid), (docSnap) => {
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         
-                        // حماية الجهاز
                         if (data.currentDevice && data.currentDevice !== deviceId) {
                             if (!isForcedLogout) {
                                 isForcedLogout = true;
                                 signOut(auth);
                                 alert("⚠️ تم تسجيل الدخول إلى هذا الحساب من هاتف/جهاز آخر. تم إنهاء جلستك الحالية لحماية اشتراكك.");
+                                window.location.reload();
                             }
                             return;
                         }
                         
                         isForcedLogout = false;
                         const fName = data.name.split(' ')[0];
-                        document.getElementById('nav-student-name').textContent = fName;
-                        document.getElementById('dash-student-name-welcome').textContent = fName;
+                        if(document.getElementById('nav-student-name')) document.getElementById('nav-student-name').textContent = fName;
+                        if(document.getElementById('dash-student-name-welcome')) document.getElementById('dash-student-name-welcome').textContent = fName;
                         
-                        // تحديث النقاط في الواجهة
                         const pts = data.points || 0;
-                        document.getElementById('nav-student-points').textContent = pts;
-                        document.getElementById('dash-student-points-welcome').textContent = pts;
-                        
-                        window.renderMyCourses(data.enrolledCourses || []);
+                        if(document.getElementById('nav-student-points')) document.getElementById('nav-student-points').textContent = pts;
+                        if(document.getElementById('dash-student-points-welcome')) document.getElementById('dash-student-points-welcome').textContent = pts;
                     }
                 });
             } else {
-                // حالة الزائر
-                document.getElementById('user-profile-menu').style.display = 'flex';
-                document.getElementById('auth-buttons').style.display = 'flex';
+                if(document.getElementById('user-profile-menu')) document.getElementById('user-profile-menu').style.display = 'flex';
+                if(document.getElementById('auth-buttons')) document.getElementById('auth-buttons').style.display = 'flex';
                 
-                document.getElementById('nav-student-name').textContent = "طالب (زائر)";
-                document.getElementById('dash-student-name-welcome').textContent = "طالب (زائر)";
+                if(document.getElementById('nav-student-name')) document.getElementById('nav-student-name').textContent = "طالب (زائر)";
+                if(document.getElementById('dash-student-name-welcome')) document.getElementById('dash-student-name-welcome').textContent = "طالب (زائر)";
                 
                 let localPts = localStorage.getItem('guestPoints') || "0";
-                document.getElementById('nav-student-points').textContent = localPts;
-                document.getElementById('dash-student-points-welcome').textContent = localPts;
-                
-                navigateTo('landing-page');
+                if(document.getElementById('nav-student-points')) document.getElementById('nav-student-points').textContent = localPts;
+                if(document.getElementById('dash-student-points-welcome')) document.getElementById('dash-student-points-welcome').textContent = localPts;
             }
         });
 
         document.getElementById('register-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const inputs = e.target.querySelectorAll('input');
-            const fakeEmail = `${inputs[1].value}@loughati.com`;
+            const cleanPhone = sanitizePhone(inputs[1].value);
+            const fakeEmail = `${cleanPhone}@loughati.com`;
+            const btn = e.target.querySelector('button');
             try {
-                e.target.querySelector('button').textContent = "جاري التسجيل...";
+                if(btn) btn.textContent = "جاري التسجيل...";
                 const cred = await createUserWithEmailAndPassword(auth, fakeEmail, inputs[3].value);
-                
                 const localCourses = JSON.parse(localStorage.getItem('guestEnrolledCourses') || '[]');
-                
                 await setDoc(doc(db, "users", cred.user.uid), {
-                    name: inputs[0].value, phone: inputs[1].value, age: inputs[2].value, stage: e.target.querySelector('select').value,
+                    name: inputs[0].value, phone: cleanPhone, age: inputs[2].value, stage: e.target.querySelector('select').value,
                     points: parseInt(localStorage.getItem('guestPoints') || '0'), 
-                    role: 'student', 
-                    enrolledCourses: localCourses, 
-                    currentDevice: deviceId, 
-                    createdAt: new Date().toLocaleDateString('ar-EG')
+                    role: 'student', enrolledCourses: localCourses, currentDevice: deviceId, createdAt: new Date().toLocaleDateString('ar-EG')
                 });
                 e.target.reset();
+                closeModal(authModal);
+                navigateTo('dashboard-view');
             } catch (err) { alert('خطأ: قد يكون الرقم مسجلاً مسبقاً.'); }
-            finally { e.target.querySelector('button').textContent = "إنشاء الحساب"; }
+            finally { if(btn) btn.textContent = "إنشاء الحساب"; }
         });
 
         document.getElementById('login-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const inputs = e.target.querySelectorAll('input');
+            const cleanPhone = sanitizePhone(inputs[0].value);
+            const fakeEmail = `${cleanPhone}@loughati.com`;
+            const btn = e.target.querySelector('button');
             try {
-                e.target.querySelector('button').textContent = "جاري الدخول...";
+                if(btn) btn.textContent = "جاري الدخول...";
                 isForcedLogout = false;
-                const cred = await signInWithEmailAndPassword(auth, `${inputs[0].value}@loughati.com`, inputs[1].value);
-                await updateDoc(doc(db, "users", cred.user.uid), { currentDevice: deviceId });
+                const cred = await signInWithEmailAndPassword(auth, fakeEmail, inputs[1].value);
+                await setDoc(doc(db, "users", cred.user.uid), { currentDevice: deviceId }, { merge: true });
                 e.target.reset();
+                closeModal(authModal);
+                navigateTo('dashboard-view');
             } catch (err) { alert('رقم الهاتف أو كلمة المرور خطأ.'); }
-            finally { e.target.querySelector('button').textContent = "تسجيل الدخول"; }
+            finally { if(btn) btn.textContent = "تسجيل الدخول"; }
         });
         
         document.getElementById('logout-btn')?.addEventListener('click', () => { 
-            isForcedLogout = true; 
-            signOut(auth); 
+            isForcedLogout = true; signOut(auth); window.location.reload(); 
         });
 
         // ================= عرض الكورسات للزوار =================
@@ -722,37 +725,68 @@
                         <p>${c.description.substring(0, 60)}...</p>
                         <button class="primary-btn full-width"><i class="fas fa-eye"></i> استعرض محتوى الكورس</button>
                     </div>`;
-                card.onclick = () => window.openCourse(docSnap.id, c.type, c.name, c.description);
+                card.addEventListener('click', () => openCourseAction(docSnap.id, c.type, c.name, c.description));
                 container.appendChild(card);
             });
+        }, (err) => {
+             if(err.code === 'permission-denied') {
+                 const container = document.getElementById('visitor-courses');
+                 if(container) container.innerHTML = '<p class="text-center w-100" style="color:red; font-weight:bold;">يرجى ضبط قواعد بيانات Firebase للسماح بالوصول.</p>';
+             }
         });
 
         // ================= كورساتي =================
-        window.renderMyCourses = async function(enrolledIds) {
+        const forceRenderMyCourses = async () => {
+            if (auth.currentUser) {
+                try {
+                    const d = await getDoc(doc(db, "users", auth.currentUser.uid));
+                    if(d.exists()) {
+                        renderMyCoursesContent(d.data().enrolledCourses || []);
+                    } else {
+                        renderMyCoursesContent([]);
+                    }
+                } catch(e) { renderMyCoursesContent([]); }
+            } else {
+                let localCourses = [];
+                try {
+                    localCourses = JSON.parse(localStorage.getItem('guestEnrolledCourses') || '[]');
+                    if(!Array.isArray(localCourses)) localCourses = [];
+                } catch(e) { localCourses = []; }
+                renderMyCoursesContent(localCourses);
+            }
+        };
+
+        const renderMyCoursesContent = async (enrolledIds) => {
             const container = document.getElementById('student-enrolled-courses');
-            if (!enrolledIds) enrolledIds = JSON.parse(localStorage.getItem('guestEnrolledCourses') || '[]');
+            if(!container) return;
+            container.innerHTML = '';
             
-            if(enrolledIds.length === 0) { container.innerHTML = '<p class="text-center w-100" style="color:var(--text-muted); font-size:18px;">لم تشترك في أي كورس بعد.<br>استعرض الكورسات في الرئيسية لتفعيلها.</p>'; return; }
+            if(enrolledIds.length === 0) { 
+                container.innerHTML = '<div class="empty-state text-center" style="grid-column: 1 / -1; padding: 40px;"><i class="fas fa-folder-open" style="font-size: 40px; color: var(--text-muted); margin-bottom: 15px;"></i><p>لم تشترك في أي كورس بعد.<br>استعرض الكورسات في الرئيسية لتفعيلها.</p></div>'; 
+                return; 
+            }
             
-            let html = '';
             for (let cid of enrolledIds) {
                 try {
                     const snap = await getDoc(doc(db, "courses", cid));
                     if (snap.exists()) {
                         const c = snap.data();
                         const cover = c.imageUrl ? `<img src="${c.imageUrl}">` : `<div class="course-thumb-title" style="font-size:16px;">${c.name}</div>`;
-                        html += `
-                        <div class="course-card" onclick="window.openCourse('${cid}', '${c.type}', '${c.name}', '${c.description}', true)">
+                        
+                        const card = document.createElement('div');
+                        card.className = "course-card";
+                        card.innerHTML = `
                             <div class="course-thumb" style="height:150px; background:linear-gradient(45deg, #065f46, #10b981);">${cover}</div>
                             <div class="course-details" style="padding:15px; text-align:center;">
                                 <h3 style="font-size:16px;">${c.name}</h3>
                                 <button class="primary-btn outline full-width mt-2"><i class="fas fa-play"></i> متابعة التعلم</button>
                             </div>
-                        </div>`;
+                        `;
+                        card.addEventListener('click', () => openCourseAction(cid, c.type, c.name, c.description, true));
+                        container.appendChild(card);
                     }
                 } catch(e) {}
             }
-            container.innerHTML = html;
         };
 
         // ================= فتح الكورس وبطاقات الدروس =================
@@ -760,15 +794,14 @@
         let pendingCourseName = "";
         let pendingCourseDesc = "";
         
-        window.openCourse = async function(id, type, name, desc, forceUnlock = false) {
-            pendingCourseId = id;
-            pendingCourseName = name;
-            pendingCourseDesc = desc;
+        const openCourseAction = async (id, type, name, desc, forceUnlock = false) => {
+            pendingCourseId = id; pendingCourseName = name; pendingCourseDesc = desc;
 
             navigateTo('course-details-view');
-            document.getElementById('course-title-header').textContent = name;
-            document.getElementById('course-desc-header').textContent = desc;
+            if(document.getElementById('course-title-header')) document.getElementById('course-title-header').textContent = name;
+            if(document.getElementById('course-desc-header')) document.getElementById('course-desc-header').textContent = desc;
             const container = document.getElementById('lessons-cards-container');
+            if(!container) return;
             container.innerHTML = '<p class="text-center w-100">جاري تحميل الدروس...</p>';
             
             let isEnrolled = (type === 'free') || forceUnlock; 
@@ -813,54 +846,60 @@
                         </div>
                     `;
                     
-                    card.onclick = () => {
+                    card.addEventListener('click', () => {
                         if(isLocked) {
-                            unlockModal.classList.add('active'); 
+                            if(unlockModal) unlockModal.classList.add('active'); 
                         } else {
-                            openLesson(lesson);
+                            openLessonAction(lesson);
                         }
-                    };
+                    });
                     container.appendChild(card);
                 });
             } catch(e) {
-                container.innerHTML = '<p class="text-center w-100" style="color:#ef4444;">حدث خطأ في تحميل الدروس، يرجى تحديث الصفحة.</p>';
+                container.innerHTML = '<p class="text-center w-100" style="color:#ef4444;">حدث خطأ في تحميل الدروس.</p>';
             }
         };
 
         // ================= فتح شاشة الدرس وتشغيل يوتيوب =================
-        function openLesson(lesson) {
+        const openLessonAction = (lesson) => {
             navigateTo('lesson-view');
-            document.getElementById('lesson-title-display').textContent = lesson.title;
-            document.getElementById('lesson-rich-text').innerHTML = lesson.contentHTML || "";
+            if(document.getElementById('lesson-title-display')) document.getElementById('lesson-title-display').textContent = lesson.title;
+            if(document.getElementById('lesson-rich-text')) document.getElementById('lesson-rich-text').innerHTML = lesson.contentHTML || "";
             
             const vFrame = document.getElementById('lesson-video-frame');
-            if(lesson.videoUrl && lesson.videoUrl.trim() !== "") { 
-                vFrame.src = getEmbedUrl(lesson.videoUrl.trim()); 
-                vFrame.parentElement.style.display = 'block'; 
-            } else { 
-                vFrame.src = ''; 
-                vFrame.parentElement.style.display = 'none'; 
+            if(vFrame) {
+                if(lesson.videoUrl && lesson.videoUrl.trim() !== "") { 
+                    vFrame.src = getEmbedUrl(lesson.videoUrl.trim()); 
+                    vFrame.parentElement.style.display = 'block'; 
+                } else { 
+                    vFrame.src = ''; 
+                    vFrame.parentElement.style.display = 'none'; 
+                }
             }
             
             const qBtn = document.getElementById('start-quiz-btn');
-            if(lesson.quizGroup && lesson.quizGroup !== 'none') {
-                qBtn.style.display = 'inline-block'; qBtn.setAttribute('data-quiz', lesson.quizGroup);
-            } else { qBtn.style.display = 'none'; }
-        }
+            if(qBtn) {
+                if(lesson.quizGroup && lesson.quizGroup !== 'none') {
+                    qBtn.style.display = 'inline-block'; qBtn.setAttribute('data-quiz', lesson.quizGroup);
+                } else { qBtn.style.display = 'none'; }
+            }
+        };
 
-        // ================= تفعيل الكود (Core Bug Fix) =================
+        // ================= تفعيل الكود وإزالة الأقفال اللحظية =================
         document.getElementById('verify-code-btn')?.addEventListener('click', async (e) => {
-            const code = document.getElementById('activation-code-input').value.trim();
+            const codeInput = document.getElementById('activation-code-input');
+            const code = codeInput ? codeInput.value.trim() : "";
             if(!code) return alert('يرجى إدخال الكود أولاً.');
-            e.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
+            
+            const btn = e.target;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
             
             try {
-                // جلب الكود
                 const snap = await getDocs(query(collection(db, "codes"), where("code", "==", code)));
                 
                 if(snap.empty) { 
                     alert('الكود غير صحيح.'); 
-                    e.target.innerHTML = '<i class="fas fa-key"></i> تأكيد الكود وفتح الدروس'; 
+                    btn.innerHTML = '<i class="fas fa-key"></i> تأكيد الكود وفتح الدروس'; 
                     return; 
                 }
                 
@@ -869,13 +908,12 @@
                 
                 if (cData.status === 'موقوف') {
                     alert('هذا الكود تم إيقافه من قبل المعلم.'); 
-                    e.target.innerHTML = '<i class="fas fa-key"></i> تأكيد الكود وفتح الدروس'; 
+                    btn.innerHTML = '<i class="fas fa-key"></i> تأكيد الكود وفتح الدروس'; 
                     return;
                 }
                 
                 const currentUserId = auth.currentUser ? auth.currentUser.uid : "GUEST_" + deviceId;
                 
-                // تحديث الكود
                 await updateDoc(codeDoc.ref, { 
                     status: "مستخدم", 
                     usedBy: currentUserId, 
@@ -883,7 +921,6 @@
                     lastUsedAt: new Date().toISOString() 
                 });
                 
-                // إضافة الكورس للطالب أو الزائر
                 if (auth.currentUser) {
                     const userRef = doc(db, "users", auth.currentUser.uid);
                     await updateDoc(userRef, { enrolledCourses: arrayUnion(pendingCourseId) });
@@ -897,15 +934,15 @@
                 
                 alert('✅ تم تفعيل الكورس بنجاح!'); 
                 closeModal(unlockModal);
-                document.getElementById('activation-code-input').value = '';
+                if(codeInput) codeInput.value = '';
                 
-                // تحديث الشاشة فوراً وفتح الأقفال دون الحاجة لتحديث الصفحة
-                window.openCourse(pendingCourseId, 'paid', pendingCourseName, pendingCourseDesc, true);
+                // التحديث اللحظي
+                openCourseAction(pendingCourseId, 'paid', pendingCourseName, pendingCourseDesc, true);
                 
             } catch(err) { 
                 alert('حدث خطأ أثناء الاتصال بقاعدة البيانات.'); 
             }
-            e.target.innerHTML = '<i class="fas fa-key"></i> تأكيد الكود وفتح الدروس';
+            btn.innerHTML = '<i class="fas fa-key"></i> تأكيد الكود وفتح الدروس';
         });
 
         // ================= محرك الاختبارات وحفظ النقاط =================
@@ -927,25 +964,32 @@
                 let time = 300; clearInterval(timer);
                 timer = setInterval(() => {
                     const m = String(Math.floor(time/60)).padStart(2,'0'), s = String(time%60).padStart(2,'0');
-                    document.getElementById('time-left').textContent = `${m}:${s}`;
-                    if(--time < 0) { clearInterval(timer); finishQuiz(); }
+                    if(document.getElementById('time-left')) document.getElementById('time-left').textContent = `${m}:${s}`;
+                    if(--time < 0) { clearInterval(timer); finishQuizAction(); }
                 }, 1000);
             } catch(err) { e.target.innerHTML = '<i class="fas fa-tasks"></i> بدء اختبار الدرس'; }
         });
 
         function loadQuestion() {
             const q = quizQs[currQ];
-            document.getElementById('current-q-num').textContent = currQ + 1;
-            document.getElementById('total-q-num').textContent = quizQs.length;
-            document.getElementById('quiz-progress-fill').style.width = `${(currQ / quizQs.length)*100}%`;
-            document.getElementById('question-text').textContent = q.question;
-            const grid = document.getElementById('options-grid'); grid.innerHTML = '';
-            document.getElementById('next-question-btn').disabled = true;
-            q.options.forEach(opt => {
-                const d = document.createElement('div'); d.className = 'option-card'; d.textContent = opt;
-                d.onclick = () => { document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected')); d.classList.add('selected'); document.getElementById('next-question-btn').disabled = false; };
-                grid.appendChild(d);
-            });
+            if(document.getElementById('current-q-num')) document.getElementById('current-q-num').textContent = currQ + 1;
+            if(document.getElementById('total-q-num')) document.getElementById('total-q-num').textContent = quizQs.length;
+            if(document.getElementById('quiz-progress-fill')) document.getElementById('quiz-progress-fill').style.width = `${(currQ / quizQs.length)*100}%`;
+            if(document.getElementById('question-text')) document.getElementById('question-text').textContent = q.question;
+            const grid = document.getElementById('options-grid'); 
+            if(grid) {
+                grid.innerHTML = '';
+                if(document.getElementById('next-question-btn')) document.getElementById('next-question-btn').disabled = true;
+                q.options.forEach(opt => {
+                    const d = document.createElement('div'); d.className = 'option-card'; d.textContent = opt;
+                    d.addEventListener('click', () => { 
+                        document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected')); 
+                        d.classList.add('selected'); 
+                        if(document.getElementById('next-question-btn')) document.getElementById('next-question-btn').disabled = false; 
+                    });
+                    grid.appendChild(d);
+                });
+            }
         }
 
         document.getElementById('next-question-btn')?.addEventListener('click', () => {
@@ -953,43 +997,45 @@
             const q = quizQs[currQ];
             document.querySelectorAll('.option-card').forEach(opt => {
                 opt.style.pointerEvents = 'none';
-                if(opt.textContent === q.correct_answer) opt.classList.add('correct');
-                if(opt.classList.contains('selected') && opt.textContent !== q.correct_answer) opt.classList.add('wrong');
+                if(opt.textContent.trim() === q.correct_answer.trim()) opt.classList.add('correct');
+                if(opt.classList.contains('selected') && opt.textContent.trim() !== q.correct_answer.trim()) opt.classList.add('wrong');
             });
-            if(sel && sel.textContent === q.correct_answer) score++;
-            document.getElementById('next-question-btn').disabled = true;
-            setTimeout(() => { currQ++; if(currQ < quizQs.length) loadQuestion(); else finishQuiz(); }, 1500);
+            if(sel && sel.textContent.trim() === q.correct_answer.trim()) score++;
+            if(document.getElementById('next-question-btn')) document.getElementById('next-question-btn').disabled = true;
+            setTimeout(() => { currQ++; if(currQ < quizQs.length) loadQuestion(); else finishQuizAction(); }, 1500);
         });
 
-        async function finishQuiz() {
+        async function finishQuizAction() {
             clearInterval(timer);
-            document.getElementById('quiz-progress-fill').style.width = `100%`;
+            if(document.getElementById('quiz-progress-fill')) document.getElementById('quiz-progress-fill').style.width = `100%`;
             navigateTo('quiz-result-view');
-            document.getElementById('final-score').textContent = score;
-            document.getElementById('total-score').textContent = quizQs.length;
+            if(document.getElementById('final-score')) document.getElementById('final-score').textContent = score;
+            if(document.getElementById('total-score')) document.getElementById('total-score').textContent = quizQs.length;
             
             const earned = score * 10;
-            document.getElementById('earned-points-display').textContent = earned;
+            if(document.getElementById('earned-points-display')) document.getElementById('earned-points-display').textContent = earned;
             
-            // إضافة النقاط لحساب الطالب أو لمتصفح الزائر
             if (auth.currentUser) {
                 try {
                     const ref = doc(db, "users", auth.currentUser.uid);
                     const snap = await getDoc(ref);
                     if(snap.exists()) {
-                        await updateDoc(ref, { points: (snap.data().points || 0) + earned });
+                        const newPts = (snap.data().points || 0) + earned;
+                        await updateDoc(ref, { points: newPts });
+                        if(document.getElementById('nav-student-points')) document.getElementById('nav-student-points').textContent = newPts;
+                        if(document.getElementById('dash-student-points-welcome')) document.getElementById('dash-student-points-welcome').textContent = newPts;
                     }
                 } catch (e) {}
             } else {
                 let localPts = parseInt(localStorage.getItem('guestPoints') || '0');
                 localPts += earned;
                 localStorage.setItem('guestPoints', localPts.toString());
-                document.getElementById('nav-student-points').textContent = localPts;
-                document.getElementById('dash-student-points-welcome').textContent = localPts;
+                if(document.getElementById('nav-student-points')) document.getElementById('nav-student-points').textContent = localPts;
+                if(document.getElementById('dash-student-points-welcome')) document.getElementById('dash-student-points-welcome').textContent = localPts;
             }
         }
 
-        // ================= المتصدرين (ترتيب فوري بدون Index) =================
+        // ================= المتصدرين =================
         onSnapshot(collection(db, "users"), (snap) => {
             const tbody = document.getElementById('full-leaderboard-body');
             const topGrid = document.getElementById('top-3-students');
@@ -999,11 +1045,16 @@
             let students = [];
             snap.forEach(dSnap => {
                 const s = dSnap.data();
-                if (s.role === 'student' && s.points > 0) students.push(s);
+                if (s.role === 'student' && Number(s.points) > 0) students.push(s);
             });
             
-            // ترتيب الطلاب يدوياً من الأكبر للأصغر لتخطي مشكلة الـ Index في فايرباس
-            students.sort((a, b) => b.points - a.points);
+            if(students.length === 0) {
+                if(tbody) tbody.innerHTML = '<tr><td colspan="4" class="text-center" style="padding: 20px; color: var(--text-muted);">كن أول من يحل الاختبارات ويتصدر القائمة!</td></tr>';
+                if(topGrid) topGrid.innerHTML = '<p style="text-align:center; width:100%; color:var(--text-muted); font-size:18px;">لا يوجد متصدرين حتى الآن.</p>';
+                return;
+            }
+            
+            students.sort((a, b) => Number(b.points) - Number(a.points));
             
             let rank = 1;
             students.forEach(s => {
@@ -1011,6 +1062,11 @@
                 if(rank <= 3 && topGrid) topGrid.innerHTML += `<div class="student-card ${rank===1?'rank-1':''}"><div class="medal">${rank===1?'🥇':rank===2?'🥈':'🥉'}</div><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=random"><h4>${s.name.split(' ')[0]}</h4><p>${s.points} نقطة</p></div>`;
                 rank++;
             });
+        }, (err) => {
+             if(err.code === 'permission-denied') {
+                 const tbody = document.getElementById('full-leaderboard-body');
+                 if(tbody) tbody.innerHTML = '<tr><td colspan="4" class="text-center" style="color:red; font-weight:bold; padding:20px;">يجب تعديل صلاحيات (Rules) قاعدة البيانات في Firebase لتسمح بقراءة البيانات للزوار.</td></tr>';
+             }
         });
     </script>
 </body>
