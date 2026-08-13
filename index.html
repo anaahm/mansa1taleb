@@ -66,7 +66,7 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* النافبار الزجاجي */
-        .main-navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--card-bg); backdrop-filter: blur(15px); box-shadow: var(--shadow-sm); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-color);}
+        .main-navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--card-bg); backdrop-filter: blur(15px); box-shadow: var(--shadow-sm); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 15px;}
         .logo h2 { background: var(--main-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; margin: 0; font-size: 28px; cursor: pointer; letter-spacing: 1px; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));}
         .nav-links-desktop { display: flex; list-style: none; gap: 35px; align-items: center;}
         .nav-links-desktop a { text-decoration: none; color: var(--text-dark); font-weight: 800; transition: var(--transition); font-size: 17px; cursor: pointer; position: relative; padding: 5px 0;}
@@ -74,7 +74,7 @@
         .nav-links-desktop a:hover::after { width: 100%; }
         .nav-links-desktop a:hover { color: var(--main-theme); transform: translateY(-2px);}
         
-        .nav-actions { display: flex; align-items: center; gap: 20px; }
+        .nav-actions { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; justify-content: flex-end;}
         .theme-toggle { background: var(--bg-color-alt); border: 2px solid var(--border-color); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--text-dark); cursor: pointer; transition: var(--transition); box-shadow: var(--shadow-sm);}
         .theme-toggle:hover { transform: rotate(45deg) scale(1.1); background: var(--main-theme-light); color: var(--main-theme); border-color: var(--main-theme);}
 
@@ -382,7 +382,7 @@
             .quiz-container { padding: 30px 20px; }
             .modal-content { padding: 30px 20px; width: 95%; max-width: 100%;}
             
-            /* تعديل المنصة التكريمية للموبايل */
+            /* تعديل المنصة التكريمية للموبايل لعدم تداخل البطاقات */
             .top-3-podium { flex-direction: column; align-items: center; gap: 30px; margin-top: 50px;}
             .podium-card { width: 90%; max-width: 300px; transform: none !important;}
             .podium-card.rank-1 { order: -1; z-index: 3;}
@@ -396,6 +396,10 @@
             
             .live-card { flex-direction: column; text-align: center; gap: 20px; padding: 25px 20px;}
             .header-with-back { flex-direction: column; gap: 20px; text-align: center;}
+            
+            /* تعديل النافبار للموبايل ليتسع للأزرار */
+            .main-navbar { padding: 10px 5%; }
+            .nav-actions { width: 100%; justify-content: center; margin-top: 10px;}
         }
     </style>
 </head>
